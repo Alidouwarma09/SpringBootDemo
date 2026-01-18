@@ -80,10 +80,37 @@
 <body>
 <header>
     <h1>Nos Produits</h1>
-    <nav>
-        <a th:href="@{/}">Accueil</a> |
-        <a th:href="@{/produit}">Produits</a>
+    <nav style="display:flex; justify-content:space-between; align-items:center;">
+
+        <!-- Liens à gauche -->
+        <div>
+            <a th:href="@{/accueil}">Accueil</a>
+            <a th:href="@{/produit}">Produits</a>
+            <a th:href="@{/les_utilisateurs}">Users</a>
+        </div>
+
+        <!-- Zone utilisateur à droite -->
+        <div>
+
+            <!-- Si NON connecté -->
+            <a th:href="@{/login}" sec:authorize="isAnonymous()">Se connecter</a>
+
+            <!-- Si connecté -->
+            <span sec:authorize="isAuthenticated()" style="margin-right:10px;">
+            👤 <strong sec:authentication="name"></strong>
+        </span>
+
+            <form th:action="@{/logout}" method="post"
+                  sec:authorize="isAuthenticated()"
+                  style="display:inline;">
+                <button type="submit" class="logout-btn">
+                    Se déconnecter
+                </button>
+            </form>
+
+        </div>
     </nav>
+
 </header>
 
 <main>
@@ -97,7 +124,16 @@
         <li th:each="prod : ${produits}">
             <a th:href="@{/produit/{id}(id=${prod.id})}" th:text="${prod.nom}">Nom produit</a>
             - Stock : <span th:text="${prod.stock}">0</span>
+            <form th:action="@{/produit/supprimer/{id}(id=${prod.id})}"
+                  method="post"
+                  style="display:inline;">
+                <button type="submit"
+                        onclick="return confirm('Supprimer ce produit ?')">
+                    🗑️
+                </button>
+            </form>
         </li>
+
     </ul>
 </main>
 

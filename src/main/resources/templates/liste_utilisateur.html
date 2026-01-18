@@ -1,103 +1,85 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Accueil</title>
+    <title>Produits</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
-        /* Reset simple */
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background-color: #f5f5f5;
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-            color: #333;
-        }
-
         header {
             background-color: #4CAF50;
             color: white;
-            padding: 20px 0;
+            padding: 15px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
-        header h1 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
-        }
-
         nav a {
             color: white;
+            margin: 0 10px;
             text-decoration: none;
-            margin: 0 15px;
             font-weight: bold;
-            transition: color 0.3s;
         }
-
-        nav a:hover {
-            color: #cdeccd;
-        }
-
         main {
             max-width: 800px;
-            margin: 40px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
             text-align: center;
+            margin-bottom: 20px;
         }
-
-        main p {
-            font-size: 1.5em;
-            color: #4CAF50;
+        form {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
         }
-
+        form input[type="text"], form input[type="number"] {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            background-color: #e8f5e9;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
         footer {
             text-align: center;
-            padding: 15px;
+            margin-top: 20px;
+            padding: 10px;
             color: #777;
-            font-size: 0.9em;
-            margin-top: 40px;
         }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.6em;
-            }
-            nav a {
-                margin: 0 10px;
-            }
-            main {
-                margin: 20px;
-                padding: 20px;
-            }
-        }
-        .logout-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    text-decoration: underline;
-}
-
     </style>
 </head>
 <body>
 <header>
-    <h1>Bienvenue sur notre site</h1>
+    <h1>Nos Produits</h1>
     <nav style="display:flex; justify-content:space-between; align-items:center;">
 
         <!-- Liens à gauche -->
@@ -129,11 +111,17 @@
         </div>
     </nav>
 
-
 </header>
 
 <main>
-    <p th:text="${message}">Message dynamique ici</p>
+
+    <ul>
+        <li th:each="user : ${utilisateurs}">
+            <a th:text="${user.username}">username </a>
+            - Mail : <span th:text="${user.email}">email</span>
+        </li>
+
+    </ul>
 </main>
 
 <footer>
