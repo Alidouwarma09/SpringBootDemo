@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -43,6 +45,7 @@ public class PageController {
     }
 
 
+
     @GetMapping("/produit/{id}")
     public String produitParId(@PathVariable("id") Long id, Model model) {
         Optional<Produit> produit = produitRepository.findById(id);
@@ -75,4 +78,13 @@ public class PageController {
         produitRepository.save(p);
         return "redirect:/produit"; // recharge la page pour afficher le nouveau produit
     }
+
+    @GetMapping("/teste")
+    @ResponseBody
+    public List<Utilisateur> test() {
+        // Récupère tous les utilisateurs depuis la base de données
+        return utilisateurRepository.findAll();
+    }
+
 }
+
