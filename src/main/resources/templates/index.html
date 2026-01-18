@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
@@ -79,15 +81,42 @@
                 padding: 20px;
             }
         }
+        .logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    text-decoration: underline;
+}
+
     </style>
 </head>
 <body>
 <header>
     <h1>Bienvenue sur notre site</h1>
     <nav>
-        <a th:href="@{/}">Accueil</a> |
+        <a th:href="@{/accueil}">Accueil</a>
         <a th:href="@{/produit}">Produits</a>
+
+        <!-- Si NON connecté -->
+        <a th:href="@{/login}" sec:authorize="isAnonymous()">Se connecter</a>
+
+        <!-- Si connecté -->
+        <form th:action="@{/logout}" method="post"
+              sec:authorize="isAuthenticated()"
+              style="display:inline;">
+            <button type="submit"
+                    style="background:none;border:none;color:white;
+                       font-weight:bold;cursor:pointer;" class="logout-btn">
+                Se déconnecter
+            </button>
+        </form>
     </nav>
+
 </header>
 
 <main>

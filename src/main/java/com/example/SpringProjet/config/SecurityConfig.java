@@ -62,6 +62,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/",
+                                "accuel",
                                 "/login",
                                 "/inscription",
                                 "/css/**"
