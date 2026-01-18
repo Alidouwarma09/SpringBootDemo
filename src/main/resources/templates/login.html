@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .login-container {
+        background-color: #fff;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .login-container h2 {
+        color: #4CAF50;
+        margin-bottom: 25px;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .login-container button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        width: 100%;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .login-container button:hover {
+        background-color: #45a049;
+    }
+
+    .login-container p {
+        margin-top: 15px;
+        font-size: 0.9em;
+    }
+
+    .login-container a {
+        color: #4CAF50;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .login-container a:hover {
+        text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="login-container">
+  <h2>Connexion</h2>
+  <form th:action="@{/login}" method="post">
+    <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+    <input type="password" name="password" placeholder="Mot de passe" required>
+    <button type="submit">Se connecter</button>
+  </form>
+  <div th:if="${param.error}" style="color:red; margin-bottom:15px;">
+    Nom d'utilisateur ou mot de passe incorrect
+  </div>
+
+  <p>Pas encore de compte ? <a th:href="@{/inscription}">Inscrivez-vous</a></p>
+</div>
+</body>
+</html>
