@@ -81,6 +81,9 @@
   <div th:if="${param.error}" style="color:red; margin-bottom:15px;">
     Nom d'utilisateur ou mot de passe incorrect
   </div>
+  <input type="checkbox" name="remember-me" value="on">
+  Se souvenir de moi
+
 
   <p>Pas encore de compte ? <a th:href="@{/inscription}">Inscrivez-vous</a></p>
 </div>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paiement Wave</title>
+    <style>
+        body { font-family:'Segoe UI'; background:#f0f4ff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+        .paiement-container { background:#fff; padding:40px; border-radius:15px; box-shadow:0 8px 25px rgba(0,0,0,0.15); text-align:center; width:350px; }
+        h1 { color:#1e3a8a; margin-bottom:20px; }
+        .montant { font-size:28px; font-weight:bold; color:#2563eb; margin-bottom:30px; }
+        button { background:#2563eb; color:#fff; padding:12px 25px; font-size:18px; border:none; border-radius:8px; cursor:pointer; }
+        button:hover { background:#1e40af; }
+        .success { color:#16a34a; font-weight:bold; margin-top:15px; }
+    </style>
+</head>
+<body>
+
+<div class="paiement-container">
+    <h1>Paiement Wave</h1>
+    <div class="montant">Montant : 10 XOF</div>
+    <button id="payerBtn">Payer maintenant</button>
+    <div class="success" id="successMessage"></div>
+</div>
+
+<script>
+    const payerBtn = document.getElementById('payerBtn');
+    const successMessage = document.getElementById('successMessage');
+
+    payerBtn.addEventListener('click', () => {
+        const montant = 10;
+
+        // 1️⃣ Créer session sur le backend
+        fetch(`/paiement-wave-session?montant=${montant}`, { method:'POST' })
+            .then(res => res.json())
+            .then(data => {
+                // 2️⃣ Rediriger vers Wave
+                window.location.href = data.wave_launch_url;
+
+                // 3️⃣ Côté site, tu peux continuer à faire du polling pour vérification (optionnel)
+                const interval = setInterval(() => {
+                    fetch(`/paiement-status/${data.reference}`)
+                        .then(r => r.json())
+                        .then(statusData => {
+                            if(statusData.statut === 'SUCCESS'){
+                                clearInterval(interval);
+                                successMessage.innerText = 'Paiement réussi ! ✅';
+                            } else if(statusData.statut === 'FAILED'){
+                                clearInterval(interval);
+                                successMessage.innerText = 'Paiement échoué ❌';
+                            }
+                        });
+                }, 3000);
+            });
+    });
+</script>
+
+</body>
+</html>

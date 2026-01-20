@@ -1,27 +1,29 @@
 package com.example.SpringProjet.controller;
 
+import com.example.SpringProjet.model.Paiement;
 import com.example.SpringProjet.model.Produit;
 import com.example.SpringProjet.model.Utilisateur;
+import com.example.SpringProjet.repository.PaiementRepository;
 import com.example.SpringProjet.repository.ProduitRepository;
 import com.example.SpringProjet.repository.UtilisateurRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Controller
 public class PageController {
 
     private final ProduitRepository produitRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final PaiementRepository paiementRepository;
 
-    public PageController(ProduitRepository produitRepository, UtilisateurRepository utilisateurRepository) {
+    public PageController(ProduitRepository produitRepository, UtilisateurRepository utilisateurRepository, PaiementRepository paiementRepository) {
         this.produitRepository = produitRepository;
         this.utilisateurRepository = utilisateurRepository;
+        this.paiementRepository = paiementRepository;
     }
 
     @GetMapping("/")
@@ -85,6 +87,91 @@ public class PageController {
         // Récupère tous les utilisateurs depuis la base de données
         return utilisateurRepository.findAll();
     }
+    @PostMapping("/paiement-wave-session")
+    @ResponseBody
+    public Map<String, String> creerCheckoutSession(@RequestParam Double montant) {
+        System.out.println("✅ Endpoint paiement-wave-session appelé");
+
+        String reference = "REF-" + UUID.randomUUID().toString().substring(0,8);
+
+        String waveLaunchUrl = "https://pay.wave.com/test_launch_url?reference=" + reference;
+
+        return Map.of(
+                "wave_launch_url", waveLaunchUrl,
+                "reference", reference
+        );
+    }
+
+
+    // 2️⃣ Webhook Wave
+    @PostMapping("/wave-webhook")
+    public String webhookWave(@RequestBody Map<String,Object> payload) {
+        System.out.println("Webhook reçu : " + payload);
+        String reference = (String) payload.get("reference");
+        String statut = (String) payload.get("status"); // SUCCESS ou FAILED
+
+        Optional<Paiement> paiementOpt = paiementRepository.findByReferenceTransaction(reference);
+        paiementOpt.ifPresent(p -> {
+            p.setStatut(statut);
+            paiementRepository.save(p);
+        });
+
+        return "OK"; // Wave attend 200
+    }
+
+    // 3️⃣ Vérifier le statut côté frontend
+    @GetMapping("/paiement-status/{reference}")
+    public Map<String,String> paiementStatus(@PathVariable String reference){
+        Optional<Paiement> paiementOpt = paiementRepository.findByReferenceTransaction(reference);
+        return Map.of("statut", paiementOpt.map(Paiement::getStatut).orElse("PENDING"));
+    }
+
+
+
+    @GetMapping("/paiement-wave")
+    public String paiement(Model model) {
+        return "paiement";
+    }
+    @GetMapping("/dashboard")
+    public String dashboard(){
+        return "dashboard";
+    }
+    @GetMapping("/icons")
+    public String icons(){
+        return "icons";
+    }
+
+    @GetMapping("/map")
+    public String map(){
+        return "map";
+    }
+
+    @GetMapping("/notifications")
+    public String notifications(){
+        return "notifications";
+    }
+
+    @GetMapping("/tables")
+    public String tables(){
+        return "tables";
+    }
+    @GetMapping("/template")
+    public String template(){
+        return "template";
+    }
+    @GetMapping("/typography")
+    public String typography(){
+        return "typography";
+    }
+
+    @GetMapping("/user")
+    public String user(){
+        return "user";
+    }
+
+
+
+
 
 }
 

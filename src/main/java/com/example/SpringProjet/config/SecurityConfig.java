@@ -66,7 +66,11 @@ public class SecurityConfig {
                                 "/login",
                                 "/teste",
                                 "/inscription",
-                                "/css/**"
+                                "/css/**",
+                                "/paiement-wave-session",
+                                "/paiement-status/**",
+                                "/wave-webhook",
+                                "/paiement-wave"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -77,10 +81,22 @@ public class SecurityConfig {
                         .failureUrl("/login?error")
                         .permitAll()
                 )
+                .rememberMe(remember -> remember
+                        .key("cle-secrete-remember-me")
+                        .tokenValiditySeconds(60 * 60 * 24 * 7) // l'utilisateur se deconnecte du navigateur apres 7 jours
+                        .userDetailsService(userDetailsService())
+                )
                 .logout(logout -> logout
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "remember-me")
                 );
+
 
         return http.build();
     }
 }
+
+
+
