@@ -1,11 +1,18 @@
 package com.example.SpringProjet.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+// 🔥 IMPORTS LOMBOK (IL MANQUAIT ÇA)
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Produit {
 
     @Id
@@ -14,31 +21,7 @@ public class Produit {
 
     private String nom;
     private int stock;
-
-    public Produit() {}  // obligatoire pour JPA
-
-    public Produit(String nom, int stock) {
-        this.nom = nom;
-        this.stock = stock;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
+    @Column(precision = 10, scale = 2)
+    private BigDecimal prix;
+    private String image;
 }

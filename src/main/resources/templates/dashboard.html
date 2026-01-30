@@ -1,271 +1,510 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/base :: header"></head>
+<html lang="fr" class="scroll-smooth"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration - L'Atelier Mode Élégance</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+  <link rel="stylesheet" th:href="@{/components/style2.css}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    primary: {
+                        50: '#fdf4f7',
+                        100: '#fce7ef',
+                        200: '#fbcfe2',
+                        300: '#f9a9c9',
+                        400: '#f472a6',
+                        500: '#ec4899',
+                        600: '#db2777',
+                        700: '#be185d',
+                        800: '#9d174d',
+                        900: '#831843',
+                    },
+                    secondary: {
+                        50: '#f8fafc',
+                        100: '#f1f5f9',
+                        200: '#e2e8f0',
+                        300: '#cbd5e1',
+                        400: '#94a3b8',
+                        500: '#64748b',
+                        600: '#475569',
+                        700: '#334155',
+                        800: '#1e293b',
+                        900: '#0f172a',
+                    }
+                },
+                fontFamily: {
+                    sans: ['Inter', 'system-ui', 'sans-serif'],
+                    serif: ['Playfair Display', 'Georgia', 'serif'],
+                }
+            }
+        }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300 font-sans">
 
-<div class="wrapper">
-  <div th:replace="fragments/base :: sidebar"></div>
-  <div class="main-panel">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-      <div class="container-fluid">
-        <div class="navbar-wrapper">
-          <div class="navbar-toggle">
-            <button type="button" class="navbar-toggler">
-              <span class="navbar-toggler-bar bar1"></span>
-              <span class="navbar-toggler-bar bar2"></span>
-              <span class="navbar-toggler-bar bar3"></span>
+
+<div class="flex h-screen overflow-hidden">
+  <admin-sidebar></admin-sidebar>
+
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <admin-navbar></admin-navbar>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+      <!-- Header Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Total Articles</p>
+              <h3 class="text-3xl font-bold text-gray-900 dark:text-white" id="totalProducts">0</h3>
+            </div>
+            <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center">
+              <i data-feather="package" class="w-6 h-6 text-primary-600"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Valeur Stock</p>
+              <h3 class="text-3xl font-bold text-gray-900 dark:text-white" id="totalValue">0 €</h3>
+            </div>
+            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+              <i data-feather="dollar-sign" class="w-6 h-6 text-green-600"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Catégories</p>
+              <h3 class="text-3xl font-bold text-gray-900 dark:text-white" id="totalCategories">0</h3>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+              <i data-feather="layers" class="w-6 h-6 text-blue-600"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Dernière MàJ</p>
+              <h3 class="text-3xl font-bold text-gray-900 dark:text-white" id="lastUpdate">--:--</h3>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center">
+              <i data-feather="clock" class="w-6 h-6 text-orange-600"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions Bar -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 mb-6">
+        <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+          <div class="relative w-full md:w-96">
+            <i data-feather="search" class="absolute left-3 top-3 w-5 h-5 text-gray-400"></i>
+            <input type="text" id="adminSearchInput" placeholder="Rechercher un article..."
+                   class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all">
+          </div>
+
+          <div class="flex gap-3 w-full md:w-auto">
+
+            <button onclick="openProductModal()" class="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transition-all flex items-center gap-2 shadow-lg shadow-primary-600/30">
+              <i data-feather="plus" class="w-5 h-5"></i>
+              <span>Nouvel Article</span>
             </button>
           </div>
-          <a class="navbar-brand" href="javascript:;">Paper Dashboard 2</a>
-        </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navigation">
-          <form>
-            <div class="input-group no-border">
-              <input type="text" value="" class="form-control" placeholder="Search...">
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <i class="nc-icon nc-zoom-split"></i>
-                </div>
-              </div>
-            </div>
-          </form>
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link btn-magnify" href="javascript:;">
-                <i class="nc-icon nc-layout-11"></i>
-                <p>
-                  <span class="d-lg-none d-md-block">Stats</span>
-                </p>
-              </a>
-            </li>
-            <li class="nav-item btn-rotate dropdown">
-              <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="nc-icon nc-bell-55"></i>
-                <p>
-                  <span class="d-lg-none d-md-block">Some Actions</span>
-                </p>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-rotate" href="javascript:;">
-                <i class="nc-icon nc-settings-gear-65"></i>
-                <p>
-                  <span class="d-lg-none d-md-block">Account</span>
-                </p>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
-    </nav>
-    <!-- End Navbar -->
-    <div class="content">
-      <div class="row">
-        <div class="col-lg-3 col-md-6 col-sm-6">
-          <div class="card card-stats">
-            <div class="card-body ">
-              <div class="row">
-                <div class="col-5 col-md-4">
-                  <div class="icon-big text-center icon-warning">
-                    <i class="nc-icon nc-globe text-warning"></i>
+
+      <!-- Products Table -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+            <tr class="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Article</th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Catégorie</th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Prix</th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Description</th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+            <!-- Products injected here -->
+            <tr th:each="produit : ${produits}" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-4">
+                  <img
+                          th:src="${#strings.startsWith(produit.image, 'http')}
+           ? ${produit.image}
+           : @{/uploads/{img}(img=${produit.image})}"
+                          th:alt="${produit.nom}"
+                          class="w-12 h-12 rounded-lg object-cover bg-gray-200">
+
+                  <!--                  <img th:src="@{'/uploads/' + ${produit.image}}" th:alt="${produit.nom}" class="w-12 h-12 rounded-lg object-cover bg-gray-200">-->
+                  <div>
+                    <h4 class="font-semibold text-gray-900 dark:text-white" th:text="${produit.nom}"></h4>
+                    <p class="text-sm text-gray-500">ID: <span th:text="${produit.id}"></span></p>
                   </div>
                 </div>
-                <div class="col-7 col-md-8">
-                  <div class="numbers">
-                    <p class="card-category">Capacity</p>
-                    <p class="card-title">150GB<p>
-                  </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200 capitalize"
+                      >Catégorie</span>
+              </td>
+              <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white" th:text="${produit.prix} + ' XOF'"></td>
+              <td class="px-6 py-4 text-gray-600 dark:text-gray-400 max-w-xs truncate" ></td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <a th:href="@{'/produit/edit/' + ${produit.id}}" class="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors" title="Modifier">
+                    <i data-feather="edit-2" class="w-4 h-4"></i>
+                  </a>
+                  <a th:href="@{'/produit/supprimer/' + ${produit.id}}" class="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors" title="Supprimer">
+                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                  </a>
                 </div>
-              </div>
-            </div>
-            <div class="card-footer ">
-              <hr>
-              <div class="stats">
-                <i class="fa fa-refresh"></i>
-                Update Now
-              </div>
-            </div>
-          </div>
+              </td>
+            </tr>
+
+            </tbody>
+          </table>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
-          <div class="card card-stats">
-            <div class="card-body ">
-              <div class="row">
-                <div class="col-5 col-md-4">
-                  <div class="icon-big text-center icon-warning">
-                    <i class="nc-icon nc-money-coins text-success"></i>
-                  </div>
-                </div>
-                <div class="col-7 col-md-8">
-                  <div class="numbers">
-                    <p class="card-category">Revenue</p>
-                    <p class="card-title">$ 1,345<p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer ">
-              <hr>
-              <div class="stats">
-                <i class="fa fa-calendar-o"></i>
-                Last day
-              </div>
-            </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden py-12 text-center">
+          <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-feather="inbox" class="w-8 h-8 text-gray-400"></i>
           </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
-          <div class="card card-stats">
-            <div class="card-body ">
-              <div class="row">
-                <div class="col-5 col-md-4">
-                  <div class="icon-big text-center icon-warning">
-                    <i class="nc-icon nc-vector text-danger"></i>
-                  </div>
-                </div>
-                <div class="col-7 col-md-8">
-                  <div class="numbers">
-                    <p class="card-category">Errors</p>
-                    <p class="card-title">23<p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer ">
-              <hr>
-              <div class="stats">
-                <i class="fa fa-clock-o"></i>
-                In the last hour
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
-          <div class="card card-stats">
-            <div class="card-body ">
-              <div class="row">
-                <div class="col-5 col-md-4">
-                  <div class="icon-big text-center icon-warning">
-                    <i class="nc-icon nc-favourite-28 text-primary"></i>
-                  </div>
-                </div>
-                <div class="col-7 col-md-8">
-                  <div class="numbers">
-                    <p class="card-category">Followers</p>
-                    <p class="card-title">+45K<p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer ">
-              <hr>
-              <div class="stats">
-                <i class="fa fa-refresh"></i>
-                Update now
-              </div>
-            </div>
-          </div>
+          <p class="text-gray-500 dark:text-gray-400">Aucun article trouvé</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card ">
-            <div class="card-header ">
-              <h5 class="card-title">Users Behavior</h5>
-              <p class="card-category">24 Hours performance</p>
-            </div>
-            <div class="card-body ">
-              <canvas id=chartHours width="400" height="100"></canvas>
-            </div>
-            <div class="card-footer ">
-              <hr>
-              <div class="stats">
-                <i class="fa fa-history"></i> Updated 3 minutes ago
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card ">
-            <div class="card-header ">
-              <h5 class="card-title">Email Statistics</h5>
-              <p class="card-category">Last Campaign Performance</p>
-            </div>
-            <div class="card-body ">
-              <canvas id="chartEmail"></canvas>
-            </div>
-            <div class="card-footer ">
-              <div class="legend">
-                <i class="fa fa-circle text-primary"></i> Opened
-                <i class="fa fa-circle text-warning"></i> Read
-                <i class="fa fa-circle text-danger"></i> Deleted
-                <i class="fa fa-circle text-gray"></i> Unopened
-              </div>
-              <hr>
-              <div class="stats">
-                <i class="fa fa-calendar"></i> Number of emails sent
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="card card-chart">
-            <div class="card-header">
-              <h5 class="card-title">NASDAQ: AAPL</h5>
-              <p class="card-category">Line Chart with Points</p>
-            </div>
-            <div class="card-body">
-              <canvas id="speedChart" width="400" height="100"></canvas>
-            </div>
-            <div class="card-footer">
-              <div class="chart-legend">
-                <i class="fa fa-circle text-info"></i> Tesla Model S
-                <i class="fa fa-circle text-warning"></i> BMW 5 Series
-              </div>
-              <hr />
-              <div class="card-stats">
-                <i class="fa fa-check"></i> Data information certified
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="footer footer-black  footer-white ">
-      <div class="container-fluid">
-        <div class="row">
-          <nav class="footer-nav">
-            <ul>
-              <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
-              <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-              <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-            </ul>
-          </nav>
-          <div class="credits ml-auto">
-              <span class="copyright">
-                © <script>
-                  document.write(new Date().getFullYear())
-                </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
-              </span>
-          </div>
-        </div>
-      </div>
-    </footer>
+    </main>
   </div>
 </div>
-<div th:replace="fragments/base::footer-sript"></div>
+
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+      <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i data-feather="trash-2" class="w-6 h-6 text-red-600"></i>
+      </div>
+      <h3 class="text-xl font-bold text-center mb-2">Confirmer la suppression</h3>
+      <p class="text-gray-600 dark:text-gray-400 text-center mb-6">
+        Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.
+      </p>
+      <div class="flex gap-3">
+        <button onclick="closeDeleteModal()" class="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+          Annuler
+        </button>
+        <button id="confirmDeleteBtn" class="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors">
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="productModal" class="fixed inset-0 hidden z-50">
+  <div class="backdrop absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm" onclick="closeProductModal()"></div>
+
+  <div class="modal relative bg-white dark:bg-gray-800 max-w-3xl mx-auto my-20 rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+
+    <!-- Image -->
+    <div class="image-section w-full md:w-1/2 h-64 md:h-auto bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+      <img id="previewImage" src="" alt="Preview" class="object-cover w-full h-full hidden">
+    </div>
+
+    <!-- Formulaire -->
+    <div class="form-section p-6 flex-1 overflow-y-auto">
+      <h2 id="modalTitle" class="text-2xl font-serif font-bold mb-4 text-gray-900 dark:text-white">Nouvel Article</h2>
+      <form id="productForm" action="/add-produit" method="post"  enctype="multipart/form-data">
+
+        <div class="form-group mb-4">
+          <label for="productName" class="block mb-1">Nom de l'article</label>
+          <input type="text" id="productName" name="nom" required placeholder="Ex: Robe Élégance Soirée" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="productPrice" class="block mb-1">Prix</label>
+          <input type="number" id="productPrice" name="prix" required step="0.01" min="0" placeholder="0.00" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="productImage" class="block mb-1">Image de l'article</label>
+          <input type="file" id="productImage" name="imageFile" accept="image/*" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+        </div>
+
+
+        <div class="form-group mb-4">
+          <label for="productDescription" class="block mb-1">Description</label>
+          <textarea id="productDescription" name="description" required placeholder="Décrivez l'article..." class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"></textarea>
+        </div>
+
+        <div class="flex gap-3 mt-4">
+          <button type="button" onclick="closeProductModal()" class="flex-1 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition">Annuler</button>
+          <button type="submit" class="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition">Enregistrer</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const productModal = document.getElementById('productModal');
+  const previewImage = document.getElementById('previewImage');
+  const productImageInput = document.getElementById('productImage');
+
+  window.openProductModal = function() {
+    productModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modalTitle').textContent = 'Nouvel Article';
+    document.getElementById('productForm').reset();
+    previewImage.style.display = 'none';
+  }
+
+  window.closeProductModal = function() {
+    productModal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // Afficher la preview de l'image locale
+  productImageInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        previewImage.src = event.target.result;
+        previewImage.style.display = 'block';
+      }
+      reader.readAsDataURL(file);
+    } else {
+      previewImage.style.display = 'none';
+    }
+  });
+});
+
+</script>
+
+
+
+<script>
+  // Admin Products Management
+  let adminProducts = [];
+  let deleteTargetId = null;
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+      loadProducts();
+      renderAdminTable();
+      updateStats();
+
+      // Search listener
+      document.getElementById('adminSearchInput').addEventListener('input', (e) => {
+          renderAdminTable(e.target.value, document.getElementById('categoryFilter').value);
+      });
+
+      // Category filter listener
+      document.getElementById('categoryFilter').addEventListener('change', (e) => {
+          renderAdminTable(document.getElementById('adminSearchInput').value, e.target.value);
+      });
+
+      // Delete confirmation
+      document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+          if (deleteTargetId) {
+              deleteProduct(deleteTargetId);
+              closeDeleteModal();
+          }
+      });
+  });
+
+  function loadProducts() {
+      const stored = localStorage.getItem('atelierProducts');
+      if (stored) {
+          adminProducts = JSON.parse(stored);
+      } else {
+          // Initialize with default data if empty
+          adminProducts = [
+              { id: 1, name: "Robe Élégance Soirée", category: "robes", price: 289, image: "https://static.photos/fashion/640x360/1", description: "Robe de soirée en soie naturelle avec broderies artisanales." },
+              { id: 2, name: "Costume Executive", category: "costumes", price: 450, image: "https://static.photos/office/640x360/2", description: "Costume deux pièces en laine vierge italienne." },
+              { id: 3, name: "Manteau Hiver Royal", category: "manteaux", price: 320, image: "https://static.photos/fashion/640x360/3", description: "Manteau long en laine mélangée avec doublure en satin." }
+          ];
+          saveProducts();
+      }
+  }
+
+  function saveProducts() {
+      localStorage.setItem('atelierProducts', JSON.stringify(adminProducts));
+      updateStats();
+  }
+
+  function updateStats() {
+      document.getElementById('totalProducts').textContent = adminProducts.length;
+      const total = adminProducts.reduce((sum, p) => sum + p.price, 0);
+      document.getElementById('totalValue').textContent = total + ' €';
+
+      const categories = new Set(adminProducts.map(p => p.category));
+      document.getElementById('totalCategories').textContent = categories.size;
+
+      const now = new Date();
+      document.getElementById('lastUpdate').textContent = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+  }
+
+  function renderAdminTable(search = '', category = 'all') {
+      const tbody = document.getElementById('productsTableBody');
+      const emptyState = document.getElementById('emptyState');
+
+      let filtered = adminProducts.filter(p => {
+          const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
+                               p.description.toLowerCase().includes(search.toLowerCase());
+          const matchesCategory = category === 'all' || p.category === category;
+          return matchesSearch && matchesCategory;
+      });
+
+      if (filtered.length === 0) {
+          tbody.innerHTML = '';
+          emptyState.classList.remove('hidden');
+          return;
+      }
+
+      emptyState.classList.add('hidden');
+      tbody.innerHTML = filtered.map(product => `
+          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
+              <td class="px-6 py-4">
+                  <div class="flex items-center gap-4">
+                      <img src="${product.image}" alt="${product.name}" class="w-12 h-12 rounded-lg object-cover bg-gray-200">
+                      <div>
+                          <h4 class="font-semibold text-gray-900 dark:text-white">${product.name}</h4>
+                          <p class="text-sm text-gray-500">ID: #${product.id}</p>
+                      </div>
+                  </div>
+              </td>
+              <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200 capitalize">
+                      ${getCategoryLabel(product.category)}
+                  </span>
+              </td>
+              <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                  ${product.price} €
+              </td>
+              <td class="px-6 py-4 text-gray-600 dark:text-gray-400 max-w-xs truncate">
+                  ${product.description}
+              </td>
+              <td class="px-6 py-4 text-right">
+                  <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onclick="editProduct(${product.id})" class="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors" title="Modifier">
+                          <i data-feather="edit-2" class="w-4 h-4"></i>
+                      </button>
+                      <button onclick="confirmDelete(${product.id})" class="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors" title="Supprimer">
+                          <i data-feather="trash-2" class="w-4 h-4"></i>
+                      </button>
+                  </div>
+              </td>
+          </tr>
+      `).join('');
+
+      if (window.feather) feather.replace();
+  }
+
+  function getCategoryLabel(cat) {
+      const map = { robes: 'Robes', costumes: 'Costumes', manteaux: 'Manteaux', accessoires: 'Accessoires' };
+      return map[cat] || cat;
+  }
+
+  function openProductModal(product = null) {
+      const modal = document.querySelector('product-modal');
+      modal.open(product);
+  }
+
+  function editProduct(id) {
+      const product = adminProducts.find(p => p.id === id);
+      if (product) {
+          openProductModal(product);
+      }
+  }
+
+  function confirmDelete(id) {
+      deleteTargetId = id;
+      document.getElementById('deleteModal').classList.remove('hidden');
+  }
+
+  function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.add('hidden');
+      deleteTargetId = null;
+  }
+
+  function deleteProduct(id) {
+      adminProducts = adminProducts.filter(p => p.id !== id);
+      saveProducts();
+      renderAdminTable(
+          document.getElementById('adminSearchInput').value,
+          document.getElementById('categoryFilter').value
+      );
+      showToast('Article supprimé avec succès', 'success');
+  }
+
+  function showToast(message, type = 'success') {
+      const existing = document.querySelector('.admin-toast');
+      if (existing) existing.remove();
+
+      const toast = document.createElement('div');
+      toast.className = `admin-toast fixed bottom-4 right-4 px-6 py-3 rounded-xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 ${
+          type === 'success' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-red-600 text-white'
+      }`;
+      toast.innerHTML = `
+          <i data-feather="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="w-5 h-5"></i>
+          <span class="font-medium">${message}</span>
+      `;
+      document.body.appendChild(toast);
+      if (window.feather) feather.replace();
+
+      setTimeout(() => toast.classList.remove('translate-y-20', 'opacity-0'), 100);
+      setTimeout(() => {
+          toast.classList.add('translate-y-20', 'opacity-0');
+          setTimeout(() => toast.remove(), 300);
+      }, 3000);
+  }
+
+  // Listen for product save from modal
+  document.addEventListener('productSaved', (e) => {
+      const product = e.detail;
+      const existingIndex = adminProducts.findIndex(p => p.id === product.id);
+
+      if (existingIndex >= 0) {
+          adminProducts[existingIndex] = product;
+          showToast('Article modifié avec succès', 'success');
+      } else {
+          adminProducts.push(product);
+          showToast('Article créé avec succès', 'success');
+      }
+
+      saveProducts();
+      renderAdminTable(
+          document.getElementById('adminSearchInput').value,
+          document.getElementById('categoryFilter').value
+      );
+  });
+</script>
+<script>feather.replace();</script>
+</body>
+
 </html>
-
-

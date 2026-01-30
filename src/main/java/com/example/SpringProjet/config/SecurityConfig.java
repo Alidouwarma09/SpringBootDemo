@@ -19,6 +19,7 @@ public class SecurityConfig {
 
     private final UtilisateurRepository utilisateurRepository;
 
+
     public SecurityConfig(UtilisateurRepository utilisateurRepository) {
         this.utilisateurRepository = utilisateurRepository;
     }
@@ -67,9 +68,11 @@ public class SecurityConfig {
                                 "/teste",
                                 "/inscription",
                                 "/css/**",
+                                "/uploads/**",
                                 "/paiement-wave-session",
                                 "/paiement-status/**",
                                 "/wave-webhook",
+                                "/dashboard",
                                 "/paiement-wave"
                         ).permitAll()
                         .anyRequest().authenticated()

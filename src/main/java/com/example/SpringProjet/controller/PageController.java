@@ -6,22 +6,29 @@ import com.example.SpringProjet.model.Utilisateur;
 import com.example.SpringProjet.repository.PaiementRepository;
 import com.example.SpringProjet.repository.ProduitRepository;
 import com.example.SpringProjet.repository.UtilisateurRepository;
+import com.example.SpringProjet.service.ProduitService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
 public class PageController {
 
-    private final ProduitRepository produitRepository;
+    private final ProduitService produitService;
     private final UtilisateurRepository utilisateurRepository;
     private final PaiementRepository paiementRepository;
 
-    public PageController(ProduitRepository produitRepository, UtilisateurRepository utilisateurRepository, PaiementRepository paiementRepository) {
-        this.produitRepository = produitRepository;
+    public PageController( ProduitService produitService, UtilisateurRepository utilisateurRepository, PaiementRepository paiementRepository) {
+        this.produitService = produitService;
         this.utilisateurRepository = utilisateurRepository;
         this.paiementRepository = paiementRepository;
     }
@@ -34,9 +41,53 @@ public class PageController {
 
     @GetMapping("/produit")
     public String produit(Model model) {
-        List<Produit> produits = produitRepository.findAll();
-        model.addAttribute("produits", produits);
+        model.addAttribute("produits", produitService.getTousLesProduits());
         return "produit";
+    }
+
+    @GetMapping("/produit/{id}")
+    public String produitParId(@PathVariable Long id, Model model) {
+        Optional<Produit> produit = produitService.getProduitParId(id);
+
+        if (produit.isPresent()) {
+            model.addAttribute("produit", produit.get());
+        } else {
+            model.addAttribute("message", "Produit non trouvé !");
+        }
+
+        return "produit_details";
+    }
+
+    @PostMapping("/add-produit")
+    public String ajouterProduit(
+            @ModelAttribute Produit produit,
+            @RequestParam("imageFile") MultipartFile imageFile
+    ) throws IOException {
+
+        if (!imageFile.isEmpty()) {
+            String uploadDir = "uploads/";
+            File uploadFolder = new File(uploadDir);
+
+            if (!uploadFolder.exists()) {
+                uploadFolder.mkdirs();
+            }
+
+            String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir, fileName);
+            Files.write(filePath, imageFile.getBytes());
+
+            produit.setImage(fileName); // OK ✅
+        }
+
+        produitService.ajouterProduit(produit);
+        return "redirect:/dashboard";
+    }
+
+
+    @PostMapping("/produit/supprimer/{id}")
+    public String supprimerProduit(@PathVariable Long id) {
+        produitService.supprimerProduit(id);
+        return "redirect:/produit";
     }
 
     @GetMapping("/les_utilisateurs")
@@ -46,40 +97,6 @@ public class PageController {
         return "liste_utilisateur";
     }
 
-
-
-    @GetMapping("/produit/{id}")
-    public String produitParId(@PathVariable("id") Long id, Model model) {
-        Optional<Produit> produit = produitRepository.findById(id);
-        if (produit.isPresent()) {
-            model.addAttribute("produit", produit.get());
-        } else {
-            model.addAttribute("produit", null);
-            model.addAttribute("message", "Produit non trouvé !");
-        }
-        return "produit_details";  // vue produit.html
-    }
-
-
-
-    @PostMapping("/produit/supprimer/{id}") // Utilisation de PostMapping car les navigateurs gèrent mal DeleteMapping via HTML simple
-    public String supprimerProduit(@PathVariable("id") Long id) {
-        // On vérifie si le produit existe avant de supprimer
-        if (produitRepository.existsById(id)) {
-            produitRepository.deleteById(id);
-        }
-
-        // On redirige vers la liste des produits pour rafraîchir l'affichage
-        return "redirect:/produit";
-    }
-
-    @PostMapping("/produit")
-    public String ajouterProduit(@RequestParam String nom,
-                                 @RequestParam int stock) {
-        Produit p = new Produit(nom, stock);
-        produitRepository.save(p);
-        return "redirect:/produit"; // recharge la page pour afficher le nouveau produit
-    }
 
     @GetMapping("/teste")
     @ResponseBody
@@ -133,9 +150,11 @@ public class PageController {
         return "paiement";
     }
     @GetMapping("/dashboard")
-    public String dashboard(){
+    public String dashboard(Model model){
+        model.addAttribute("produits", produitService.getTousLesProduits());
         return "dashboard";
     }
+
     @GetMapping("/icons")
     public String icons(){
         return "icons";

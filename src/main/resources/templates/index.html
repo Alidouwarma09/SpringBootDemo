@@ -1,144 +1,682 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
-
+<html lang="fr" class="scroll-smooth" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Accueil</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <style>
-        /* Reset simple */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Atelier Mode Élégance - Vêtements Sur Mesure</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧵</text></svg>">
+    <link rel="stylesheet" th:href="@{/components/styles.css}">
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-            color: #333;
-        }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #cdeccd;
-        }
-
-        main {
-            max-width: 800px;
-            margin: 40px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        main p {
-            font-size: 1.5em;
-            color: #4CAF50;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            color: #777;
-            font-size: 0.9em;
-            margin-top: 40px;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.6em;
-            }
-            nav a {
-                margin: 0 10px;
-            }
-            main {
-                margin: 20px;
-                padding: 20px;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#fdf4f7',
+                            100: '#fce7ef',
+                            200: '#fbcfe2',
+                            300: '#f9a9c9',
+                            400: '#f472a6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                    }
+                }
             }
         }
-        .logout-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    text-decoration: underline;
-}
-
-    </style>
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-<header>
-    <h1>Bienvenue sur notre site</h1>
-    <nav style="display:flex; justify-content:space-between; align-items:center;">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300 font-sans">
 
-        <!-- Liens à gauche -->
-        <div>
-            <a th:href="@{/}">Accueil</a>
-            <a th:href="@{/produit}">Produits</a>
-            <a th:href="@{/les_utilisateurs}">Users</a>
-            <a th:href="@{/paiement-wave}">Faire un don</a>
+<!-- Custom Components -->
+<script th:href="@{/components/navbar.js}" ></script>
+<script th:href="@{/components/footer.js}"></script>
+<script th:href="@{/components/product-card.js}" ></script>
+
+<atelier-navbar></atelier-navbar>
+
+<!-- Hero Section -->
+<section class="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="https://static.photos/fashion/1200x630/42" alt="Atelier background" class="w-full h-full object-cover opacity-90 dark:opacity-40">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-600/80 to-secondary-900/60 dark:from-primary-900/90 dark:to-secondary-950/80"></div>
+    </div>
+
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-4 border border-white/30">
+                Artisan Confectionnaire depuis 1985
+            </span>
+        <h1 class="font-serif text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            L'Art du Vêtement <br>
+            <span class="text-primary-200">Sur Mesure</span>
+        </h1>
+        <p class="text-xl text-gray-100 mb-8 max-w-2xl mx-auto font-light">
+            Découvrez notre collection exclusive de vêtements confectionnés avec passion et savoir-faire artisanal.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#collection" class="px-8 py-4 bg-white text-primary-700 rounded-full font-semibold hover:bg-primary-50 transition-all transform hover:scale-105 shadow-lg">
+                Voir la Collection
+            </a>
+            <a href="#contact" class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-all">
+                Prendre Rendez-vous
+            </a>
         </div>
+    </div>
+</section>
 
-        <!-- Zone utilisateur à droite -->
-        <div>
-
-            <!-- Si NON connecté -->
-            <a th:href="@{/login}" sec:authorize="isAnonymous()">Se connecter</a>
-
-            <!-- Si connecté -->
-            <span sec:authorize="isAuthenticated()" style="margin-right:10px;">
-            👤 <strong sec:authentication="name"></strong>
-        </span>
-
-            <form th:action="@{/logout}" method="post"
-                  sec:authorize="isAuthenticated()"
-                  style="display:inline;">
-                <button type="submit" class="logout-btn">
-                    Se déconnecter
+<!-- Filters & Search Section -->
+<section class="sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 py-4">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <!-- Categories -->
+            <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide">
+                <button class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-primary-600 text-white transition-all" data-category="all">
+                    Tous
                 </button>
-            </form>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-all" data-category="robes">
+                    Robes
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-all" data-category="costumes">
+                    Costumes
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-all" data-category="manteaux">
+                    Manteaux
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-all" data-category="accessoires">
+                    Accessoires
+                </button>
+            </div>
 
+            <!-- Search -->
+            <div class="relative w-full md:w-72">
+                <input type="text" id="searchInput" placeholder="Rechercher un article..."
+                       class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all">
+                <i data-feather="search" class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"></i>
+            </div>
         </div>
-    </nav>
+    </div>
+</section>
 
+<!-- Products Grid -->
+<section id="collection" class="py-16 container mx-auto px-4">
+    <div class="text-center mb-12">
+        <h2 class="font-serif text-4xl font-bold text-gray-900 dark:text-white mb-4">Notre Collection</h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Chaque pièce est confectionnée avec des matériaux nobles et un souci du détail incomparable.
+        </p>
+    </div>
 
-</header>
+    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <!-- Products will be injected here by JavaScript -->
+    </div>
 
-<main>
-    <p th:text="${message}">Message dynamique ici</p>
-</main>
+    <div id="noResults" class="hidden text-center py-16">
+        <i data-feather="search" class="w-16 h-16 text-gray-300 mx-auto mb-4"></i>
+        <p class="text-gray-500 text-lg">Aucun article ne correspond à votre recherche.</p>
+    </div>
+</section>
 
-<footer>
-    <p>&copy; 2026 Mon Site</p>
-</footer>
+<!-- Features Section -->
+<section class="py-16 bg-white dark:bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-700/50 hover:shadow-lg transition-all">
+                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-feather="scissors" class="w-8 h-8 text-primary-600"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold mb-2">Sur Mesure</h3>
+                <p class="text-gray-600 dark:text-gray-400">Chaque vêtement est ajusté selon vos mesures pour un confort optimal.</p>
+            </div>
+            <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-700/50 hover:shadow-lg transition-all">
+                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-feather="award" class="w-8 h-8 text-primary-600"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold mb-2">Qualité Premium</h3>
+                <p class="text-gray-600 dark:text-gray-400">Nous sélectionnons uniquement les meilleurs tissus et matériaux.</p>
+            </div>
+            <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-700/50 hover:shadow-lg transition-all">
+                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-feather="truck" class="w-8 h-8 text-primary-600"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold mb-2">Livraison Express</h3>
+                <p class="text-gray-600 dark:text-gray-400">Recevez vos commandes sous 48h avec emballage cadeau offert.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-16 bg-primary-50 dark:bg-gray-900/50">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                <div class="p-8 md:p-12">
+                    <h2 class="font-serif text-3xl font-bold mb-6">Contactez-nous</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8">
+                        Pour une commande sur mesure ou des renseignements, n'hésitez pas à nous contacter.
+                    </p>
+                    <form class="space-y-4" onsubmit="event.preventDefault(); alert('Message envoyé !');">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Nom</label>
+                            <input type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Email</label>
+                            <input type="email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Message</label>
+                            <textarea rows="4" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary-500 outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+                            Envoyer
+                        </button>
+                    </form>
+                </div>
+                <div class="bg-primary-600 p-8 md:p-12 text-white flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-serif text-2xl font-bold mb-4">Notre Atelier</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <i data-feather="map-pin" class="w-5 h-5 mt-1"></i>
+                                <span>123 Rue de la Mode<br>75001 Paris, France</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i data-feather="phone" class="w-5 h-5"></i>
+                                <span>+33 1 23 45 67 89</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i data-feather="mail" class="w-5 h-5"></i>
+                                <span>contact@atelier-mode.fr</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <p class="text-primary-200 text-sm">Ouvert du Lundi au Samedi<br>10h00 - 19h00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<atelier-footer></atelier-footer>
+
+<!-- Product Modal -->
+<div id="productModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div class="absolute inset-4 md:inset-10 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-2xl">
+        <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-white/80 dark:bg-gray-800/80 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+        <div class="w-full md:w-1/2 h-64 md:h-full bg-gray-100 dark:bg-gray-700">
+            <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+        </div>
+        <div class="w-full md:w-1/2 p-6 md:p-12 overflow-y-auto">
+            <span id="modalCategory" class="text-primary-600 font-medium text-sm uppercase tracking-wider"></span>
+            <h2 id="modalTitle" class="font-serif text-3xl font-bold mt-2 mb-4"></h2>
+            <p id="modalPrice" class="text-2xl font-bold text-gray-900 dark:text-white mb-6"></p>
+            <p id="modalDescription" class="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed"></p>
+
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                    <span>Disponible immédiatement</span>
+                </div>
+                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                    <span>Retouches offertes</span>
+                </div>
+                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                    <span>Garantie satisfaction</span>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="addToCartFromModal()" class="flex-1 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center gap-2">
+                    <i data-feather="shopping-bag" class="w-5 h-5"></i>
+                    Ajouter au panier
+                </button>
+                <button class="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <i data-feather="heart" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Sidebar -->
+<div id="cartSidebar" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white dark:bg-gray-800 shadow-2xl transform translate-x-full transition-transform duration-300 z-50 flex flex-col">
+    <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+        <h2 class="font-serif text-2xl font-bold">Votre Panier</h2>
+        <button onclick="toggleCart()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
+            <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+    </div>
+    <div id="cartItems" class="flex-1 overflow-y-auto p-6 space-y-4">
+        <p class="text-gray-500 text-center py-8">Votre panier est vide</p>
+    </div>
+    <div class="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+        <div class="flex justify-between mb-4 text-lg font-bold">
+            <span>Total</span>
+            <span id="cartTotal">0 €</span>
+        </div>
+        <button class="w-full py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+            Passer la commande
+        </button>
+    </div>
+</div>
+
+<script >
+    // Product Data
+const products = [
+    {
+        id: 1,
+        name: "Robe Élégance Soirée",
+        category: "robes",
+        price: 289,
+        image: "https://static.photos/fashion/640x360/1",
+        description: "Robe de soirée en soie naturelle avec broderies artisanales. Coupe empire avec traîne légère. Disponible en bordeaux, noir et bleu nuit."
+    },
+    {
+        id: 2,
+        name: "Costume Executive",
+        category: "costumes",
+        price: 450,
+        image: "https://static.photos/office/640x360/2",
+        description: "Costume deux pièces en laine vierge italienne. Coupe slim moderne avec revers classiques. Parfait pour le business et les événements formels."
+    },
+    {
+        id: 3,
+        name: "Manteau Hiver Royal",
+        category: "manteaux",
+        price: 320,
+        image: "https://static.photos/fashion/640x360/3",
+        description: "Manteau long en laine mélangée avec doublure en satin. Col montant et boutons vintage. Chaleur et élégance garanties pour l'hiver."
+    },
+    {
+        id: 4,
+        name: "Robe Cocktail Rose",
+        category: "robes",
+        price: 195,
+        image: "https://static.photos/fashion/640x360/4",
+        description: "Robe cocktail courte en crêpe avec détails perlés au col. Idéale pour les cérémonies et les soirées entre amis."
+    },
+    {
+        id: 5,
+        name: "Chemise Sur Mesure",
+        category: "costumes",
+        price: 89,
+        image: "https://static.photos/office/640x360/5",
+        description: "Chemise en popeline de coton égyptien. Col français avec boutons de manchettes. Confection sur mesure avec monogramme optionnel."
+    },
+    {
+        id: 6,
+        name: "Veste Tweed Classique",
+        category: "manteaux",
+        price: 245,
+        image: "https://static.photos/fashion/640x360/6",
+        description: "Veste en tweed écossais traditionnel avec doublure Liberty. Boutons en corne véritable. Style intemporel britannique."
+    },
+    {
+        id: 7,
+        name: "Foulard Soie Premium",
+        category: "accessoires",
+        price: 65,
+        image: "https://static.photos/fashion/640x360/7",
+        description: "Carré de soie 90x90cm avec imprimé exclusif dessiné à la main. Bordure roulottée main. Accessoire versatile et sophistiqué."
+    },
+    {
+        id: 8,
+        name: "Robe de Mariée Légère",
+        category: "robes",
+        price: 890,
+        image: "https://static.photos/fashion/640x360/8",
+        description: "Robe de mariée en dentelle de Calais et crêpe de soie. Dos nu avec boutonnage perlé. Jupon intégré pour un volume parfait."
+    },
+    {
+        id: 9,
+        name: "Pantalon Tailor Fit",
+        category: "costumes",
+        price: 120,
+        image: "https://static.photos/office/640x360/9",
+        description: "Pantalon de costume en flanelle de laine. Coupe ajustée avec pinces. Ourlet avec revers pour une touche d'élégance."
+    },
+    {
+        id: 10,
+        name: "Trench Coat Iconique",
+        category: "manteaux",
+        price: 280,
+        image: "https://static.photos/fashion/640x360/10",
+        description: "Trench coat en gabardine de coton imperméable. Ceinture traditionnelle avec boucle en cuir. Doublure amovible."
+    },
+    {
+        id: 11,
+        name: "Ceinture Cuir Artisanal",
+        category: "accessoires",
+        price: 75,
+        image: "https://static.photos/fashion/640x360/11",
+        description: "Ceinture en cuir de vachette pleine fleur tanné végétal. Boucle en laiton massif. Vieillit magnifiquement avec le temps."
+    },
+    {
+        id: 12,
+        name: "Gilet de Costume",
+        category: "costumes",
+        price: 110,
+        image: "https://static.photos/office/640x360/12",
+        description: "Gilet en laine super 120 avec dos en satin. Ajustement parfait pour compléter votre costume trois pièces."
+    }
+];
+
+// Cart State
+let cart = [];
+let currentFilter = 'all';
+let searchTerm = '';
+
+// DOM Elements
+const productsGrid = document.getElementById('productsGrid');
+const searchInput = document.getElementById('searchInput');
+const filterButtons = document.querySelectorAll('.filter-btn');
+const noResults = document.getElementById('noResults');
+const cartItems = document.getElementById('cartItems');
+const cartTotal = document.getElementById('cartTotal');
+const cartSidebar = document.getElementById('cartSidebar');
+const modal = document.getElementById('productModal');
+let currentModalProduct = null;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    renderProducts();
+    setupEventListeners();
+    updateCartCount();
+});
+
+// Event Listeners
+function setupEventListeners() {
+    // Filter buttons
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Update active state
+            filterButtons.forEach(b => {
+                b.classList.remove('active', 'bg-primary-600', 'text-white');
+                b.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+            });
+            e.target.classList.add('active');
+            e.target.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+
+            currentFilter = e.target.dataset.category;
+            renderProducts();
+        });
+    });
+
+    // Search input
+    searchInput.addEventListener('input', (e) => {
+        searchTerm = e.target.value.toLowerCase();
+        renderProducts();
+    });
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+            if (!cartSidebar.classList.contains('translate-x-full')) {
+                toggleCart();
+            }
+        }
+    });
+}
+
+// Render Products
+function renderProducts() {
+    const filtered = products.filter(product => {
+        const matchesCategory = currentFilter === 'all' || product.category === currentFilter;
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                             product.description.toLowerCase().includes(searchTerm);
+        return matchesCategory && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+        productsGrid.innerHTML = '';
+        noResults.classList.remove('hidden');
+    } else {
+        noResults.classList.add('hidden');
+        productsGrid.innerHTML = filtered.map(product => `
+            <article class="product-card bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 group cursor-pointer" onclick="openModal(${product.id})">
+                <div class="img-zoom-container relative h-64 overflow-hidden bg-gray-100 dark:bg-gray-700">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-primary-600 price-tag">
+                        ${product.price} €
+                    </div>
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                </div>
+                <div class="p-6">
+                    <div class="text-xs font-medium text-primary-600 uppercase tracking-wider mb-2">${getCategoryLabel(product.category)}</div>
+                    <h3 class="font-serif text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 transition-colors">${product.name}</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-4">${product.description}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">${product.price} €</span>
+                        <button onclick="event.stopPropagation(); addToCart(${product.id})" class="p-2 bg-primary-100 dark:bg-primary-900/30 text-primary-600 rounded-full hover:bg-primary-600 hover:text-white transition-all btn-lift">
+                            <i data-feather="shopping-bag" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `).join('');
+
+        // Re-initialize feather icons for new content
+        if (window.feather) {
+            feather.replace();
+        }
+    }
+}
+
+// Helper function for category labels
+function getCategoryLabel(category) {
+    const labels = {
+        'robes': 'Robes',
+        'costumes': 'Costumes',
+        'manteaux': 'Manteaux',
+        'accessoires': 'Accessoires'
+    };
+    return labels[category] || category;
+}
+
+// Modal Functions
+function openModal(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    currentModalProduct = product;
+
+    document.getElementById('modalImage').src = product.image;
+    document.getElementById('modalImage').alt = product.name;
+    document.getElementById('modalCategory').textContent = getCategoryLabel(product.category);
+    document.getElementById('modalTitle').textContent = product.name;
+    document.getElementById('modalPrice').textContent = `${product.price} €`;
+    document.getElementById('modalDescription').textContent = product.description;
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    if (window.feather) {
+        feather.replace();
+    }
+}
+
+function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    currentModalProduct = null;
+}
+
+function addToCartFromModal() {
+    if (currentModalProduct) {
+        addToCart(currentModalProduct.id);
+        closeModal();
+    }
+}
+
+// Cart Functions
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+
+    updateCartUI();
+    showCartNotification();
+
+    // Animate cart badge
+    const badge = document.querySelector('.cart-badge');
+    if (badge) {
+        badge.classList.add('cart-badge-bounce');
+        setTimeout(() => badge.classList.remove('cart-badge-bounce'), 300);
+    }
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    updateCartUI();
+}
+
+function updateQuantity(productId, delta) {
+    const item = cart.find(item => item.id === productId);
+    if (item) {
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+            removeFromCart(productId);
+        } else {
+            updateCartUI();
+        }
+    }
+}
+
+function updateCartUI() {
+    updateCartCount();
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Votre panier est vide</p>';
+        cartTotal.textContent = '0 €';
+    } else {
+        cartItems.innerHTML = cart.map(item => `
+            <div class="flex gap-4 bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl">
+                <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+                <div class="flex-1">
+                    <h4 class="font-semibold text-sm mb-1">${item.name}</h4>
+                    <p class="text-primary-600 font-bold mb-2">${item.price} €</p>
+                    <div class="flex items-center gap-2">
+                        <button onclick="updateQuantity(${item.id}, -1)" class="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
+                            <i data-feather="minus" class="w-3 h-3"></i>
+                        </button>
+                        <span class="text-sm font-medium w-6 text-center">${item.quantity}</span>
+                        <button onclick="updateQuantity(${item.id}, 1)" class="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
+                            <i data-feather="plus" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                </div>
+                <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 transition-colors self-start">
+                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                </button>
+            </div>
+        `).join('');
+
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        cartTotal.textContent = `${total} €`;
+
+        if (window.feather) {
+            feather.replace();
+        }
+    }
+}
+
+function updateCartCount() {
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const badge = document.querySelector('.cart-badge');
+    if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'flex' : 'none';
+    }
+}
+
+function toggleCart() {
+    const isOpen = !cartSidebar.classList.contains('translate-x-full');
+    if (isOpen) {
+        cartSidebar.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+    } else {
+        cartSidebar.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function showCartNotification() {
+    // Create notification toast
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-4 right-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-lg shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3';
+    toast.innerHTML = `
+        <i data-feather="check-circle" class="w-5 h-5 text-green-400 dark:text-green-600"></i>
+        <span class="font-medium">Article ajouté au panier</span>
+    `;
+    document.body.appendChild(toast);
+
+    if (window.feather) {
+        feather.replace();
+    }
+
+    // Animate in
+    setTimeout(() => {
+        toast.classList.remove('translate-y-20', 'opacity-0');
+    }, 100);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Dark mode toggle
+function toggleDarkMode() {
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+}
+
+// Check for saved theme preference
+if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+}
+</script>
+<script>feather.replace();</script>
 </body>
 </html>
